@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>HTML Quiz</h1>
+        <form>
+            <div class="question">
+                <h3 id="question">1. What does HTML stand for?</h3>
+                <ul id="options" class="options">
+                    <li><input type="radio" name="q1" value="true"> Hyper Text Markup Language</li>
+                    <li><input type="radio" name="q1" value="false"> Home Tool Markup Language</li>
+                    <li><input type="radio" name="q1" value="false"> Hyperlinks and Text Markup Language</li>
+                </ul>
+            </div>
+            <div class="quiz-footer">
+                <button type="button" class="submit-btn">Submit</button>
+                <button type="button" class="submit-btn" onclick="window.location.href='index.html'">Return To Home</button>
+            </div>
+        </form>
+        <h3 style="visibility: hidden;" id="score">Your score is </h3>
+    </div>
+    <script>
+        const questions = [
+            {
+                question: "1. What does HTML stand for?",
+                options: [
+                    { text: "Home Tool Markup Language", correct: false },
+                    { text: "Hyperlinks and Text Markup Language", correct: false },
+                    { text: "Hyper Text Markup Language", correct: true }
+                ]
+            },
+            {
+                question: "2. What does CSS stand for?",
+                options: [
+                    { text: "Cascading Style Sheets", correct: true },
+                    { text: "Colorful Style Sheets", correct: false },
+                    { text: "Computer Style Sheets", correct: false }
+                ]
+            },
+            {
+                question: "3. What does JS stand for?",
+                options: [
+                    { text: "JavaSource", correct: false },
+                    { text: "JustScript", correct: false },
+                    { text: "JavaScript", correct: true }
+                ]
+            },
+            {
+                question: "4. What is the correct HTML element for inserting a line break?",
+                options: [
+                    { text: "<break>", correct: false },
+                    { text: "<lb>", correct: false },
+                    { text: "<br>", correct: true }
+                ]
+            },
+            {
+                question: "5. Which HTML attribute is used to define inline styles?",
+                options: [
+                    { text: "style", correct: true },
+                    { text: "class", correct: false },
+                    { text: "font", correct: false }
+                ]
+            },
+            {
+                question: "6. Which HTML element is used to specify a footer for a document or section?",
+                options: [
+                    { text: "<footer>", correct: true },
+                    { text: "<bottom>", correct: false },
+                    { text: "<section>", correct: false }
+                ]
+            },
+            {
+                question: "7. What is the correct HTML element for the largest heading?",
+                options: [
+                    { text: "<h1>", correct: true },
+                    { text: "<heading>", correct: false },
+                    { text: "<h6>", correct: false }
+                ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function showQuestion(index) {
+            document.forms[0].reset(); // Reset the form
+            const questionElement = document.getElementById('question');
+            const optionsElement = document.getElementById('options');
+
+            questionElement.innerText = questions[index].question;
+            optionsElement.innerHTML = '';
+
+            for (let i = 0; i < questions[index].options.length; i++) {
+                const li = document.createElement('li');
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `q${index}`;
+                input.value = questions[index].options[i].correct;
+                li.appendChild(input);
+                li.appendChild(document.createTextNode(questions[index].options[i].text));
+                optionsElement.appendChild(li);
+            }
+        }
+
+        function nextQuestion() {
+            const options = document.querySelectorAll(`input[name="q${currentQuestionIndex}"]`);
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].checked && options[i].value === "true") {
+                    score++;
+                }
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                updateScore();
+            }
+        }
+
+        document.querySelector('.submit-btn').addEventListener('click', nextQuestion);
+
+        function updateScore() {
+            document.getElementById("score").style.visibility = 'visible';
+            document.getElementById("score").textContent = `Your score is ${score}`;
+        }
+
+        showQuestion(currentQuestionIndex);
+    </script>
+</body>
+</html>

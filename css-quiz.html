@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>CSS Quiz</h1>
+        <form>
+            <div class="question">
+                <h3 id="question"></h3>
+                <ul id="options" class="options">
+                    <li><input type="radio" name="q1" value="true"></li>
+                    <li><input type="radio" name="q1" value="false"></li>
+                    <li><input type="radio" name="q1" value="false"></li>
+                </ul>
+            </div>
+            <div class="quiz-footer">
+                <button type="button" class="submit-btn">Submit</button>
+                <button type="button" class="submit-btn" onclick="window.location.href='index.html'">Return To Home</button>
+            </div>
+        </form>
+        <h3 style="visibility: hidden;" id="score">Your score is </h3>
+    </div>
+    <script>
+        const questions = [
+            {
+            question: "1. What does CSS stand for?",
+            options: [
+                { text: "Cascading Style Sheets", correct: true },
+                { text: "Colorful Style Sheets", correct: false },
+                { text: "Computer Style Sheets", correct: false }
+            ]
+            },
+            {
+            question: "2. Which property is used to change the background color?",
+            options: [
+                { text: "color", correct: false },
+                { text: "background-color", correct: true },
+                { text: "bgcolor", correct: false }
+            ]
+            },
+            {
+            question: "3. Which CSS property is used to change the text color of an element?",
+            options: [
+                { text: "text-color", correct: false },
+                { text: "color", correct: true },
+                { text: "font-color", correct: false }
+            ]
+            },
+            {
+            question: "4. Which CSS property controls the text size?",
+            options: [
+                { text: "font-size", correct: true },
+                { text: "text-size", correct: false },
+                { text: "font-style", correct: false }
+            ]
+            },
+            {
+            question: "5. How do you select an element with id 'demo'?",
+            options: [
+                { text: "#demo", correct: true },
+                { text: ".demo", correct: false },
+                { text: "demo", correct: false }
+            ]
+            },
+            {
+            question: "6. How do you select elements with class name 'test'?",
+            options: [
+                { text: ".test", correct: true },
+                { text: "#test", correct: false },
+                { text: "test", correct: false }
+            ]
+            },
+            {
+            question: "7. Which property is used to change the font of an element?",
+            options: [
+                { text: "font-family", correct: true },
+                { text: "font-style", correct: false },
+                { text: "font-weight", correct: false }
+            ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function showQuestion(index) {
+            document.forms[0].reset(); // Reset the form
+            const questionElement = document.getElementById('question');
+            const optionsElement = document.getElementById('options');
+
+            questionElement.innerText = questions[index].question;
+            optionsElement.innerHTML = '';
+
+            for (let i = 0; i < questions[index].options.length; i++) {
+                const li = document.createElement('li');
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `q${index}`;
+                input.value = questions[index].options[i].correct;
+                li.appendChild(input);
+                li.appendChild(document.createTextNode(questions[index].options[i].text));
+                optionsElement.appendChild(li);
+            }
+        }
+
+        function nextQuestion() {
+            const options = document.querySelectorAll(`input[name="q${currentQuestionIndex}"]`);
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].checked && options[i].value === "true") {
+                    score++;
+                }
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                updateScore();
+            }
+        }
+
+        document.querySelector('.submit-btn').addEventListener('click', nextQuestion);
+
+        function updateScore() {
+            document.getElementById("score").style.visibility = 'visible';
+            document.getElementById("score").textContent = `Your score is ${score}`;
+        }
+
+        showQuestion(currentQuestionIndex);
+    </script>
+</body>
+</html>
